@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sale</title>
+    <link href="/css/styles.css" rel="stylesheet"/>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+        <a class="navbar-brand" href="main">Strona naszego sekretariatu</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/main}">Strona Główna</a>
+                </li>
+
+
+
+                <li class="nav-item">
+                    <a class="nav-link" th:inline="text" style="color:lightskyblue;">Jesteś zalogowany jako <b style="text-transform:capitalize">[[${#httpServletRequest.remoteUser}]]</b></a>
+                </li>
+
+                <li class="nav-item">
+                    <form method="post" th:action="@{/index}">
+                        <button class="btn btn-primary" type="submit" onclick="successfullyLogout()" value="Sign Out">Wyloguj</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div align="center">
+    <h1 class = elegantshadow>Sale</h1>
+
+    <a href = "/new">Dodaj nową salę</a>
+
+
+    <table class="styled-table">
+
+        <thread>
+            <tr>
+                <th>Numer spotkania</th>
+                <th>Numer pracownika</th>
+                <th>Numer sali</th>
+                <th>Data rozpoczęcia</th>
+                <th>Data zakończenia</th>
+            </tr>
+        </thread>
+
+        <tbody>
+        <tr th:each = "spotkanie : ${listSpotkanie}">
+            <td th:text = "${spotkanie.nr_spotkania}">Numer spotkania</td>
+            <td th:text = "${spotkanie.nr_sali}">Numer sali</td>
+            <td th:text = "${spotkanie.nr_pracownika}">Numer pracownika</td>
+            <td th:text = "${spotkanie.data_rozpoczecia_spotkania}">Data rozpoczęcia</td>
+            <td th:text = "${spotkanie.data_zakonczenia_spotkania}">Data zakończenia</td>
+            <td>
+                <a th:href="@{'/edit/' + ${spotkanie.nr_spotkania}}">Edytuj</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <a th:href="@{'/delete/' + ${spotkanie.nr_spotkania}}">Usuń</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

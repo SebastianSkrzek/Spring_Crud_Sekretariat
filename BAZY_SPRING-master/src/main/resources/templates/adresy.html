@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Adresy</title>
+    <link href="/css/styles.css" rel="stylesheet"/>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+        <a class="navbar-brand" href="main">Strona naszego sekretariatu</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/main}">Strona Główna</a>
+                </li>
+
+
+
+                <li class="nav-item">
+                    <a class="nav-link" th:inline="text" style="color:lightskyblue;">Jesteś zalogowany jako <b style="text-transform:capitalize">[[${#httpServletRequest.remoteUser}]]</b></a>
+                </li>
+
+                <li class="nav-item">
+                    <form method="post" th:action="@{/index}">
+                        <button class="btn btn-primary" type="submit" onclick="successfullyLogout()" value="Sign Out">Wyloguj</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div align="center">
+    <h1 class = elegantshadow>Adresy</h1>
+
+    <a href = "/newAdres">Dodaj nowy adres</a>
+
+
+    <table class="styled-table">
+
+        <thread>
+            <tr>
+                <th>Numer adresu</th>
+                <th>Numer poczty</th>
+                <th>Miasto</th>
+                <th>Ulica</th>
+                <th>Numer domu</th>
+                <th>Numer lokalu</th>
+            </tr>
+        </thread>
+
+        <tbody>
+        <tr th:each = "adres : ${listAdres}">
+            <td th:text = "${adres.nr_adresu}">Numer adresu</td>
+            <td th:text = "${adres.nr_poczty}">Numer poczty</td>
+            <td th:text = "${adres.miasto}">Miasto</td>
+            <td th:text = "${adres.ulica}">Ulica</td>
+            <td th:text = "${adres.nr_domu}">Numer domu</td>
+            <td th:text = "${adres.nr_lokalu}">Numer lokalu</td>
+            <td>
+                <a th:href="@{'/editAdres/' + ${adres.nr_adresu}}">Edytuj</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <a th:href="@{'/deleteAdres/' + ${adres.nr_adresu}}">Usuń</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

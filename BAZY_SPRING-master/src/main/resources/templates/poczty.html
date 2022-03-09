@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Poczty</title>
+    <link href="/css/styles.css" rel="stylesheet"/>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+        <a class="navbar-brand" href="main">Strona naszego sekretariatu</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/main}">Strona Główna</a>
+                </li>
+
+
+
+                <li class="nav-item">
+                    <a class="nav-link" th:inline="text" style="color:lightskyblue;">Jesteś zalogowany jako <b style="text-transform:capitalize">[[${#httpServletRequest.remoteUser}]]</b></a>
+                </li>
+
+                <li class="nav-item">
+                    <form method="post" th:action="@{/index}">
+                        <button class="btn btn-primary" type="submit" onclick="successfullyLogout()" value="Sign Out">Wyloguj</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div align="center">
+    <h1 class = elegantshadow>Poczty</h1>
+
+    <a href = "/newPoczta">Dodaj nowa poczte</a>
+
+
+    <table class="styled-table">
+
+        <thread>
+            <tr>
+                <th>Numer poczty</th>
+                <th>Kod poczty</th>
+                <th>Poczta</th>
+
+            </tr>
+        </thread>
+
+        <tbody>
+        <tr th:each = "poczta : ${listPoczta}">
+            <td th:text = "${poczta.nr_poczty}">Numer poczty</td>
+            <td th:text = "${poczta.kod_poczty}">Kod poczty</td>
+            <td th:text = "${poczta.poczta}">Poczta</td>
+
+            <td>
+                <a th:href="@{'/editPoczta/' + ${poczta.nr_poczty}}">Edytuj</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <a th:href="@{'/deletePoczta/' + ${poczta.nr_poczty}}">Usuń</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

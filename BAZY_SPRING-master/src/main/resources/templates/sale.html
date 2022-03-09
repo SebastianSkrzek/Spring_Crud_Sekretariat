@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sale</title>
+    <link href="/css/styles.css" rel="stylesheet"/>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+        <a class="navbar-brand" href="main">Strona naszego sekretariatu</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/main}">Strona Główna</a>
+                </li>
+
+
+
+                <li class="nav-item">
+                    <a class="nav-link" th:inline="text" style="color:lightskyblue;">Jesteś zalogowany jako <b style="text-transform:capitalize">[[${#httpServletRequest.remoteUser}]]</b></a>
+                </li>
+
+                <li class="nav-item">
+                    <form method="post" th:action="@{/index}">
+                        <button class="btn btn-primary" type="submit" onclick="successfullyLogout()" value="Sign Out">Wyloguj</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div align="center">
+    <h1 class = elegantshadow>Sale</h1>
+
+    <a href = "/newSala">Dodaj nową salę</a>
+
+
+    <table class="styled-table">
+
+        <thread>
+            <tr>
+                <th>Numer sali</th>
+                <th>Numer działu</th>
+                <th>Nazwa sali</th>
+                <th>Rezerwacja sali od</th>
+                <th>Rezerwacja sali do</th>
+                <th>Ilość miejs do siedzenia</th>
+                <th>Ilość komputerów</th>
+                <th>Powierzchnia sali</th>
+            </tr>
+        </thread>
+
+        <tbody>
+        <tr th:each = "sala : ${listSala}">
+            <td th:text = "${sala.nr_sali}">Numer sali</td>
+            <td th:text = "${sala.nr_dzialu}">Numer działu</td>
+            <td th:text = "${sala.nazwa_sali}">Nazwa sali</td>
+            <td th:text = "${sala.rezerwacja_sali_od}">Rezerwacja sali od</td>
+            <td th:text = "${sala.rezerwacja_sali_do}">Rezerwacja sali do</td>
+            <td th:text = "${sala.ilosc_miejsc_do_siedzenia}">Ilość miejsc do siedzenia</td>
+            <td th:text = "${sala.ilosc_komputerow}">Ilość komputerów</td>
+            <td th:text = "${sala.powierzchnia}">Powierzchnia sali</td>
+            <td>
+                <a th:href="@{'/editSala/' + ${sala.nr_sali}}">Edytuj</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <a th:href="@{'/deleteSala/' + ${sala.nr_sali}}">Usuń</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

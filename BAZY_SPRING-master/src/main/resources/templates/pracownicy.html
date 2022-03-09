@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pracowmicy</title>
+    <link href="/css/styles.css" rel="stylesheet"/>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+        <a class="navbar-brand" href="main">Strona naszego sekretariatu</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/main}">Strona Główna</a>
+                </li>
+
+
+
+                <li class="nav-item">
+                    <a class="nav-link" th:inline="text" style="color:lightskyblue;">Jesteś zalogowany jako <b style="text-transform:capitalize">[[${#httpServletRequest.remoteUser}]]</b></a>
+                </li>
+
+                <li class="nav-item">
+                    <form method="post" th:action="@{/index}">
+                        <button class="btn btn-primary" type="submit" onclick="successfullyLogout()" value="Sign Out">Wyloguj</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div align="center">
+    <h1 class = elegantshadow>Pracownicy</h1>
+
+    <a href = "/newPracownik">Dodaj nowego pracownika</a>
+
+
+    <table class="styled-table">
+
+        <thread>
+            <tr>
+                <th>Numer pracownika</th>
+                <th>Numer działu</th>
+                <th>Numer adresu</th>
+                <th>Imie</th>
+                <th>Nazwisko</th>
+                <th>Data urodzenia</th>
+                <th>Płeć</th>
+                <th>Stanowisko</th>
+                <th>Data zatrudnienia</th>
+                <th>e-mail</th>
+                <th>Pesel</th>
+                <th>Ważność zatrudnienia</th>
+                <th>Numer telefonu</th>
+            </tr>
+        </thread>
+
+        <tbody>
+        <tr th:each = "pracownik : ${listPracownik}">
+            <td th:text = "${pracownik.nr_pracownika}">Numer pracownika</td>
+            <td th:text = "${pracownik.nr_dzialu}">Numer działu</td>
+            <td th:text = "${pracownik.nr_adresu}">Numer adresu</td>
+            <td th:text = "${pracownik.imie}">Imie</td>
+            <td th:text = "${pracownik.nazwisko}">Nazwisko</td>
+            <td th:text = "${pracownik.data_urodzenia}">Data urodzenia</td>
+            <td th:text = "${pracownik.plec}">Płeć</td>
+            <td th:text = "${pracownik.stanowisko}">Stanowisko</td>
+            <td th:text = "${pracownik.data_zatrudnienia}">Data zatrudnienia</td>
+            <td th:text = "${pracownik.e_mail}">e-mail</td>
+            <td th:text = "${pracownik.pesel}">Pesel</td>
+            <td th:text = "${pracownik.waznosc_zatrudnienia}">Ważność zatrudnienia</td>
+            <td th:text = "${pracownik.nr_telefonu}">Numer telefonu</td>
+            <td>
+                <a th:href="@{'/editPracownik/' + ${pracownik.nr_pracownika}}">Edytuj</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <a th:href="@{'/deletePracownik/' + ${pracownik.nr_pracownika}}">Usuń</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

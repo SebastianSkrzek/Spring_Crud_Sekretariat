@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/css/styles.css" rel="stylesheet"/>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+
+<div align = "center">
+
+    <h1 class = elegantshadow>Edytuj Adres</h1>
+    <br/>
+
+    <form action= "#" th:action="@{/updateAdres}" th:objects = "${adres}" method = "post">
+
+        <table class = styled-table>
+            <tr>
+                <td>nr_adresu</td>
+                <td><input type = "text" th:field ="*{adres.nr_adresu}" readonly="readonly"></td>
+            </tr>
+
+
+            <tr>
+                <td>nr_poczty:</td>
+                <td><input type = "text" th:field ="*{adres.nr_poczty}"></td>
+            </tr>
+
+            <tr>
+                <td>miasto:</td>
+                <td><input type = "text" th:field ="*{adres.miasto}"></td>
+            </tr>
+
+            <tr>
+                <td>ulica:</td>
+                <td><input type = "text" th:field ="*{adres.ulica}"></td>
+            </tr>
+
+            <tr>
+                <td>ne_domu:</td>
+                <td><input type = "text" th:field ="*{adres.nr_domu}"></td>
+            </tr>
+
+            <tr>
+                <td>nr_lokalu:</td>
+                <td><input type = "text" th:field ="*{adres.nr_lokalu}"></td>
+            </tr>
+
+            <tr>
+                <td>Item Name:</td>
+                <td colspan= "2"><button type = "submit">Save</button></td>
+            </tr>
+
+
+
+        </table>
+
+
+    </form>
+
+</div>
+</body>
+</html>
