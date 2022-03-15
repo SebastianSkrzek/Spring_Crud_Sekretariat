@@ -1,0 +1,448 @@
+-- Create sequences section -------------------------------------------------
+
+CREATE SEQUENCE DzialSeq1
+ INCREMENT BY 1
+ START WITH 1
+ NOMAXVALUE
+ NOMINVALUE
+ CACHE 20
+/
+
+CREATE SEQUENCE PracownikSeq1
+ INCREMENT BY 1
+ START WITH 1
+ NOMAXVALUE
+ NOMINVALUE
+ CACHE 20
+/
+
+CREATE SEQUENCE DokumentSeq1
+ INCREMENT BY 1
+ START WITH 1
+ NOMAXVALUE
+ NOMINVALUE
+ CACHE 20
+/
+
+CREATE SEQUENCE KlientSeq1
+ INCREMENT BY 1
+ START WITH 1
+ NOMAXVALUE
+ NOMINVALUE
+ CACHE 20
+/
+
+CREATE SEQUENCE AdresSeq1
+ INCREMENT BY 1
+ START WITH 1
+ NOMAXVALUE
+ NOMINVALUE
+ CACHE 20
+/
+
+CREATE SEQUENCE WynagrodzenieSeq1
+ INCREMENT BY 1
+ START WITH 1
+ NOMAXVALUE
+ NOMINVALUE
+ CACHE 20
+/
+
+CREATE SEQUENCE SpotkanieSeq1
+ INCREMENT BY 1
+ START WITH 1
+ NOMAXVALUE
+ NOMINVALUE
+ CACHE 20
+/
+
+CREATE SEQUENCE PocztaSeq1
+ INCREMENT BY 1
+ START WITH 1
+ NOMAXVALUE
+ NOMINVALUE
+ CACHE 20
+/
+
+CREATE SEQUENCE SalaSeq1
+ INCREMENT BY 1
+ START WITH 1
+ NOMAXVALUE
+ NOMINVALUE
+ CACHE 20
+/
+
+CREATE SEQUENCE JezykSeq1
+ INCREMENT BY 1
+ START WITH 1
+ NOMAXVALUE
+ NOMINVALUE
+ CACHE 20
+/
+
+-- Create tables section -------------------------------------------------
+
+-- Table Dzialy
+
+CREATE TABLE Dzialy(
+  nr_dzialu Integer NOT NULL,
+  nazwa_dzialu Varchar2(30 ) NOT NULL,
+  data_powstania_dzialu Date NOT NULL
+)
+/
+
+-- Add keys for table Dzialy
+
+ALTER TABLE Dzialy ADD CONSTRAINT Dzial_PK PRIMARY KEY (nr_dzialu)
+/
+
+-- Table Pracownicy
+
+CREATE TABLE Pracownicy(
+  nr_pracownika Integer NOT NULL,
+  nr_dzialu Integer NOT NULL,
+  nr_adresu Integer NOT NULL,
+  imie Varchar2(30 ) NOT NULL,
+  nazwisko Varchar2(30 ) NOT NULL,
+  data_urodzenia Date NOT NULL,
+  plec Char(256 ) NOT NULL
+        CHECK (Plec IN ('M','K')),
+  stanowisko Varchar2(30 ) NOT NULL
+        CHECK (stanowisko IN ('kierownik','pracownik','stazysta')),
+  data_zatrudnienia Date NOT NULL,
+  e_mail Varchar2(255 ),
+  pesel Char(11 ),
+  waznosc_zatrudnienia Date,
+  nr_telefonu Varchar2(15 )
+)
+/
+
+-- Create indexes for table Pracownicy
+
+CREATE INDEX dzial_pracownika ON Pracownicy (nr_dzialu)
+/
+
+CREATE INDEX adres_pracownika ON Pracownicy (nr_adresu)
+/
+
+-- Add keys for table Pracownicy
+
+ALTER TABLE Pracownicy ADD CONSTRAINT Pracownik_PK PRIMARY KEY (nr_pracownika)
+/
+
+-- Table Dokumenty
+
+CREATE TABLE Dokumenty(
+  nr_dokumentu Integer NOT NULL,
+  nr_pracownika Integer NOT NULL,
+  nr_spotkania Integer,
+  nr_klienta Integer,
+  data_podpisania Date NOT NULL,
+  data_waznosci Date
+)
+/
+
+-- Create indexes for table Dokumenty
+
+CREATE INDEX podpisany_przez_pracownika ON Dokumenty (nr_pracownika)
+/
+
+CREATE INDEX podpisany_na_spotkaniu ON Dokumenty (nr_spotkania)
+/
+
+CREATE INDEX podpisany_przez_klienta ON Dokumenty (nr_klienta)
+/
+
+-- Add keys for table Dokumenty
+
+ALTER TABLE Dokumenty ADD CONSTRAINT Dokument_PK PRIMARY KEY (nr_dokumentu)
+/
+
+-- Table Klienci
+
+CREATE TABLE Klienci(
+  nr_klienta Integer NOT NULL,
+  nr_adresu Integer,
+  imie Varchar2(30 ) NOT NULL,
+  nazwisko Varchar2(30 ) NOT NULL,
+  data_urodzenia Date NOT NULL,
+  plec Char(256 ) NOT NULL
+        CHECK (Plec IN ('M','K')),
+  nr_telefonu Varchar2(15 ),
+  e_mail Varchar2(255 ),
+  pesel Char(11 )
+)
+/
+
+-- Create indexes for table Klienci
+
+CREATE INDEX adres_klienta ON Klienci (nr_adresu)
+/
+
+-- Add keys for table Klienci
+
+ALTER TABLE Klienci ADD CONSTRAINT Klient_PK PRIMARY KEY (nr_klienta)
+/
+
+-- Table Spotkania
+
+CREATE TABLE Spotkania(
+  nr_spotkania Integer NOT NULL,
+  nr_pracownika Integer NOT NULL,
+  nr_sali Integer NOT NULL,
+  data_rozpaczecia_spotkania Date NOT NULL,
+  data_zakonczenia_spotkania Date
+)
+/
+
+-- Create indexes for table Spotkania
+
+CREATE INDEX pracownik_na_spotkaniu ON Spotkania (nr_pracownika)
+/
+
+CREATE INDEX sala_spotkania ON Spotkania (nr_sali)
+/
+
+-- Add keys for table Spotkania
+
+ALTER TABLE Spotkania ADD CONSTRAINT Spotkania PRIMARY KEY (nr_spotkania)
+/
+
+-- Table Sale
+
+CREATE TABLE Sale(
+  nr_sali Integer NOT NULL,
+  nr_dzialu Integer,
+  nazwa_sali Varchar2(30 ) NOT NULL,
+  rezerwacja_sali_od Date,
+  rezerwacja_sali_do Date,
+  ilosc_miejsc_do_siedzenia Integer NOT NULL,
+  ilosc_komputerow Integer NOT NULL,
+  powierzchnia Number(10,2) NOT NULL
+)
+/
+
+-- Create indexes for table Sale
+
+CREATE INDEX dzial_sali ON Sale (nr_dzialu)
+/
+
+-- Add keys for table Sale
+
+ALTER TABLE Sale ADD CONSTRAINT Unique_Identifier1 PRIMARY KEY (nr_sali)
+/
+
+-- Table Przedstawiciele
+
+CREATE TABLE Przedstawiciele(
+  nr_pracownika Integer NOT NULL,
+  uprawnienia Varchar2(10 ) NOT NULL
+        CHECK (uprawnienia IN ('niskie','średnie','wysokie'))
+)
+/
+
+-- Add keys for table Przedstawiciele
+
+ALTER TABLE Przedstawiciele ADD CONSTRAINT Unique_Identifier2 
+PRIMARY KEY (nr_pracownika)
+/
+
+-- Table Pracownicy_biurowi
+
+CREATE TABLE Pracownicy_biurowi(
+  nr_pracownika Integer NOT NULL,
+  nr_pokoju Varchar2(5 ),
+  nr_pietra Integer,
+  nr_biurka Varchar2(5 )
+)
+/
+
+-- Add keys for table Pracownicy_biurowi
+
+ALTER TABLE Pracownicy_biurowi ADD CONSTRAINT Unique_Identifier3 
+PRIMARY KEY (nr_pracownika)
+/
+
+-- Table Kopie_dokumentu
+
+CREATE TABLE Kopie_dokumentu(
+  nr_dzialu Integer NOT NULL,
+  nr_dokumentu Integer NOT NULL
+)
+/
+
+-- Table Klienci_Na_Spotkaniach
+
+CREATE TABLE Klienci_Na_Spotkaniach(
+  nr_klienta Integer NOT NULL,
+  nr_spotkania Integer NOT NULL
+)
+/
+
+-- Table Wynagrodzenia
+
+CREATE TABLE Wynagrodzenia(
+  nr_wynagrodzenia Integer NOT NULL,
+  nr_pracownika Integer NOT NULL,
+  data Date NOT NULL,
+  kwota_podstawowa Number(10,2) NOT NULL,
+  kwota_premia Number(10,2) NOT NULL
+)
+/
+
+-- Create indexes for table Wynagrodzenia
+
+CREATE INDEX wynagrodzenie_pracownika ON Wynagrodzenia (nr_pracownika)
+/
+
+-- Add keys for table Wynagrodzenia
+
+ALTER TABLE Wynagrodzenia ADD CONSTRAINT PK_Wynagrodzenia 
+PRIMARY KEY (nr_wynagrodzenia)
+/
+
+-- Table Adresy
+
+CREATE TABLE Adresy(
+  nr_adresu Integer NOT NULL,
+  nr_poczty Integer NOT NULL,
+  miasto Varchar2(30 ) NOT NULL,
+  ulica Varchar2(30 ) NOT NULL,
+  nr_domu NVarchar2(4) NOT NULL,
+  nr_lokalu Varchar2(4 )
+)
+/
+
+-- Create indexes for table Adresy
+
+CREATE INDEX poczta_adresu ON Adresy (nr_poczty)
+/
+
+-- Add keys for table Adresy
+
+ALTER TABLE Adresy ADD CONSTRAINT PK_Adresy PRIMARY KEY (nr_adresu)
+/
+
+-- Table Poczty
+
+CREATE TABLE Poczty(
+  nr_poczty Integer NOT NULL,
+  kod_poczty Char(6 ),
+  poczta Varchar2(30 )
+)
+/
+
+-- Add keys for table Poczty
+
+ALTER TABLE Poczty ADD CONSTRAINT PK_Poczty PRIMARY KEY (nr_poczty)
+/
+
+-- Table Znajomosci_jezykow
+
+CREATE TABLE Znajomosci_jezykow(
+  kod_poziomu Varchar2(2 ) NOT NULL
+        CHECK (kod_poziomu IN ('B1','B2','C1','C2')),
+  nr_pracownika Integer NOT NULL,
+  nr_jezyka Integer NOT NULL
+)
+/
+
+-- Add keys for table Znajomosci_jezykow
+
+ALTER TABLE Znajomosci_jezykow ADD CONSTRAINT PK_Znajomosci_jezykow 
+PRIMARY KEY (nr_pracownika,nr_jezyka)
+/
+
+-- Table Jezyki
+
+CREATE TABLE Jezyki(
+  nr_jezyka Integer NOT NULL,
+  kod_jezyka Varchar2(3 ) NOT NULL,
+  nazwa Varchar2(20 ) NOT NULL
+)
+/
+
+-- Add keys for table Jezyki
+
+ALTER TABLE Jezyki ADD CONSTRAINT PK_Jezyki 
+PRIMARY KEY (nr_jezyka)
+/
+
+
+-- Create foreign keys (relationships) section ------------------------------------------------- 
+
+ALTER TABLE Pracownicy ADD CONSTRAINT Zatrudnia FOREIGN KEY (nr_dzialu) 
+REFERENCES Dzialy (nr_dzialu)
+/
+
+
+
+ALTER TABLE Dokumenty ADD CONSTRAINT Pracownik_Podpisuje 
+FOREIGN KEY (nr_pracownika) REFERENCES Pracownicy (nr_pracownika)
+/
+
+
+
+ALTER TABLE Spotkania ADD CONSTRAINT Pracownik_na_spotkaniu 
+FOREIGN KEY (nr_pracownika) REFERENCES Pracownicy (nr_pracownika)
+/
+
+
+
+ALTER TABLE Dokumenty ADD CONSTRAINT Dokumenty_ze_spotkania 
+FOREIGN KEY (nr_spotkania) REFERENCES Spotkania (nr_spotkania)
+/
+
+
+
+ALTER TABLE Spotkania ADD CONSTRAINT W_sali_odbywa_sie_spotkanie 
+FOREIGN KEY (nr_sali) REFERENCES Sale (nr_sali)
+/
+
+
+
+ALTER TABLE Dokumenty ADD CONSTRAINT Podpisuje_dokument 
+FOREIGN KEY (nr_klienta) REFERENCES Klienci (nr_klienta)
+/
+
+
+
+ALTER TABLE Wynagrodzenia ADD CONSTRAINT Wynagrodzenia_pracownika 
+FOREIGN KEY (nr_pracownika) REFERENCES Pracownicy (nr_pracownika)
+/
+
+
+
+ALTER TABLE Adresy ADD CONSTRAINT Adres_posiada_poczte 
+FOREIGN KEY (nr_poczty) REFERENCES Poczty (nr_poczty)
+/
+
+
+
+ALTER TABLE Pracownicy ADD CONSTRAINT Pracownik_posiada_adres 
+FOREIGN KEY (nr_adresu) REFERENCES Adresy (nr_adresu)
+/
+
+
+
+ALTER TABLE Sale ADD CONSTRAINT Dzial_posiada_sale 
+FOREIGN KEY (nr_dzialu) REFERENCES Dzialy (nr_dzialu)
+/
+
+
+
+ALTER TABLE Znajomosci_jezykow ADD CONSTRAINT Przedstawiciel_zna_jezyk 
+FOREIGN KEY (nr_pracownika) REFERENCES Przedstawiciele (nr_pracownika)
+/
+
+
+
+ALTER TABLE Znajomosci_jezykow ADD CONSTRAINT Znajomosc_konkretnego_jezyka 
+FOREIGN KEY (nr_jezyka) REFERENCES Jezyki (nr_jezyka)
+/
+
+
+
+ALTER TABLE Klienci ADD CONSTRAINT Klient_posiada_adres FOREIGN KEY (nr_adresu) 
+REFERENCES Adresy (nr_adresu)
+/
